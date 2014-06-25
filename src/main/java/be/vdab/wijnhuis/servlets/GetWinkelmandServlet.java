@@ -37,7 +37,6 @@ public class GetWinkelmandServlet extends HttpServlet {
         Map<Wijn, Integer> weergaveMandje;
         
   
-
         
         
         weergaveMandje = new LinkedHashMap<>();

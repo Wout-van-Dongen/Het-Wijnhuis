@@ -16,11 +16,10 @@ public class BestelBon implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue
-    @Column(name = "BonNr")
+    @Id    @GeneratedValue    @Column(name = "BonNr")
     // Auto-generated primary key from the column 'BonNr'
     private long bonNr;
+    
     @Temporal(TemporalType.DATE)
     @Column(name = "BestelDatum")
     //Variable van het type DATE
@@ -49,8 +48,7 @@ public class BestelBon implements Serializable {
          */
     }
 
-    public BestelBon(long bonNr, Date bestelDatum, String naam, String straat, String huisNr, String postcode, String gemeente, int bestelWijze) {
-        this.bonNr = bonNr;
+    public BestelBon(Date bestelDatum, String naam, String straat, String huisNr, String postcode, String gemeente, int bestelWijze) {
         this.bestelDatum = bestelDatum;
         this.naam = naam;
         this.straat = straat;

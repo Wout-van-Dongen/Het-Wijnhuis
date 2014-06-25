@@ -33,8 +33,8 @@ private static final long serialVersionUID = 1L;
        @JoinColumn(name = "SoortNr")
        private Soort soort;
        
-           @OneToMany(mappedBy = "wijnNr")
-    private Set<BestelBonLijn> bonLijnen;
+   /*        @OneToMany(mappedBy = "wijnNr")
+    private Set<BestelBonLijn> bonLijnen;*/
        
        
 
@@ -54,7 +54,7 @@ private static final long serialVersionUID = 1L;
         setBesteld(besteld);
         setPrijs(prijs);
         
-        bonLijnen = new LinkedHashSet<>();
+       // bonLijnen = new LinkedHashSet<>();
     }
   
 
