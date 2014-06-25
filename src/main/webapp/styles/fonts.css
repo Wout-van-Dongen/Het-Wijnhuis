@@ -1,0 +1,61 @@
+body{
+    
+}
+
+h1{
+    font-size: 50px;    
+}
+
+nav ul li a{
+    font-weight:bolder;
+    }
+    
+   section.fouten{
+        font-size:11px;
+        font-weight: 500;
+    }
+    
+    span.fouten{
+        font-size: 10px;
+    }
+    
+    h2{
+        font-size: 16px;
+        text-align: center;
+    }
+    
+    section#soortenlijst a, section#wijnenlijst a{
+    font-weight:600;
+    font-size:11px;
+}
+
+section.form span{
+    font-weight: bolder;
+}
+
+/*Winkelmandje*/
+
+table.winkelmand thead{
+font-weight: bolder;
+}
+
+/*Formulier*/
+
+section#bestellingsformulier label{
+    font-weight: bolder;
+}
+
+
+/*Varia*/
+
+.centertext{
+    text-align: center;
+}
+
+.lefttext{
+    text-align: left;
+}
+
+.righttext{
+    text-align: right;
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/Wijnhuis"> 
+	<Resource
+	    name="jdbc/wijnhuis" auth="Container" type="javax.sql.DataSource"
+		username="cursist" password="cursist"
+		driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/wijnhuis"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+		validationInterval="3600000"
+		testOnBorrow="true"
+		validationQuery="select 1"
+	/>
+</Context>

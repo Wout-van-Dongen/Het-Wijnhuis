@@ -1,0 +1,75 @@
+body{
+
+}
+
+nav{
+    background:#531017;
+    border-bottom-color: #531017;
+}
+
+nav ul li a{
+    color:#eeeeff;
+}
+nav ul li a:hover{
+    color:#ff0000;
+}
+
+header h1{
+    background-image: url('../img/grapes.png');
+    background-repeat: no-repeat;
+}
+
+h2{
+    color:#770055;
+    border-color: #770055;
+}
+
+section.fouten{
+    color:#ff0000;
+    background:#ff9999;
+}
+
+span.fouten{
+    color:#ff0000;
+}
+
+section#vlaggenlijst a img:hover{
+border-color:#ff0000;
+}
+
+section#soortenlijst a, section#wijnenlijst a{
+    color:#2200cc;
+}
+
+section#soortenlijst a:hover, section#wijnenlijst a:hover{
+    color:#ff0000;
+}
+
+span.beoordeling{
+    color:#FFCC00;
+}
+
+/*Winkelmandje*/
+
+table.winkelmand{
+    border:#531017 solid 1px;
+}
+
+table.winkelmand thead, table.winkelmand tfoot{
+    background-color: #531017;
+    color:#ffffff;
+}
+
+table.winkelmand tbody tr:nth-child(odd){
+    background-color:#cc99ff ;
+}
+
+table.winkelmand tbody tr:nth-child(even){
+    background-color:#ffccff ;
+}
+
+ table.winkelmand thead th.heading{
+background-color: #ffffff;
+color:#531017;
+border:#531017 solid 1px;
+}

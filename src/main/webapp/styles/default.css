@@ -1,0 +1,161 @@
+body{
+
+}
+
+nav{
+    overflow-y: auto;
+    width:100%;
+    border-bottom-width: 2px;
+    border-bottom-style: groove;
+}
+
+nav ul li{
+    padding:5px;
+    float:left;
+}
+
+header h1{
+    height:60px;
+    padding:20px;
+    padding-left: 120px;
+}
+
+section.fouten{
+    margin: 20px;
+    padding:10px;
+}
+
+section.fouten ul li{
+    margin-left:10px;
+    list-style-type: square;
+}
+
+h2{
+    border-style: solid;
+    border-width: 1px;
+    margin:30px;
+    margin-bottom:10px;
+}
+
+/*VlaggenLijst*/
+
+section#vlaggenlijst{
+    margin-left: 50px;
+    margin-right:50px;
+    text-align: center;
+}
+
+section#vlaggenlijst ul{
+    display:inline-block;
+   }
+
+section#vlaggenlijst ul li{
+    display:inline-block;
+    margin:auto;
+}
+
+section#vlaggenlijst a img{
+    margin:3px;
+    width:50px;
+    height: 32px;
+}
+
+section#vlaggenlijst a img:hover{
+    margin:0px;
+border-width:3px;
+border-style: solid;
+}
+
+/*SoortenLijst*/
+
+section#soortenlijst ul{
+    text-align: center;
+}
+
+/*WijnenLijst*/
+
+section#wijnenlijst{
+    text-align: center;
+}
+
+section#wijnenlijst ul{
+display:inline-block;
+text-align:left;
+}
+
+/*Bestelling*/
+
+section.form{
+    margin:50px;
+}
+
+section.form label, section.form span, section.form input{
+    display:block;
+}
+
+section.form span{
+    margin: 20px;
+        margin-top: 0px;
+}
+
+section.form span.fouten, input#input{
+    display:inline-block;
+    margin:0;
+}
+
+/*Winkelmand*/
+
+table.winkelmand{
+    margin: 0px auto;
+}
+
+table.winkelmand thead th{
+padding:5px;
+}
+
+table.winkelmand tbody td, table.winkelmand thead th.heading{
+padding:2px;
+}
+
+ table.winkelmand thead th.heading{
+font-size: 14pt;
+}
+
+.wijnCel{
+    width:350px;
+    }
+
+.prijsCel{
+    width:75px;
+}
+
+.aantalCel{
+    width:75px;
+}
+
+.betalenCel{
+    width:100px;
+}
+
+/*Bevestigings formulier*/
+
+section#bestellingsformulier{
+    width:600px;
+    margin: 50px auto;
+}
+
+section#bestellingsformulier label{
+    display: inline-block;
+    width:75px;
+}
+
+section#bestellingsformulier input[type="text"]{
+    display: inline-block;
+    width:600px;
+}
+
+section#bestellingsformulier div.input{
+   margin: 10px 0px;
+}
+
+
