@@ -15,11 +15,10 @@ public class BestelBon implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue
-    @Column(name = "BonNr")
+    @Id    @GeneratedValue    @Column(name = "BonNr")
     // Auto-generated primary key from the column 'BonNr'
     private long bonNr;
+    
     @Temporal(TemporalType.DATE)
     @Column(name = "BestelDatum")
     //Variable van het type DATE
@@ -36,10 +35,11 @@ public class BestelBon implements Serializable {
     private String gemeente;
     @Column(name = "BestelWijze")
     private int bestelWijze;
-    @OneToMany(mappedBy = "bestelbon")
-    private Set<BestelBonLijn> bestelBonLijnen;
 
- //Constructors
+
+   /* @OneToMany(mappedBy = "bonNr")
+    private Set<BestelBonLijnE> bonLijnen;*/
+
     protected BestelBon() {
         /**
          * Default constructor Needs to be present in JPA But is inaccessible
@@ -55,36 +55,41 @@ public class BestelBon implements Serializable {
         this.postcode = postcode;
         this.gemeente = gemeente;
         this.bestelWijze = bestelWijze;
-        bestelBonLijnen = new LinkedHashSet<>();
+       // bonLijnen = new LinkedHashSet<>();
     }
 
     //Adders
-    public void addBonLijn(BestelBonLijn bonLijn) {
-        bestelBonLijnen.add(bonLijn);
-    }
+   /* public void addBonLijn(BestelBonLijnE bonLijn) {
+        bonLijnen.add(bonLijn);
+    }*/
 
     //Getters
-    public long getBonNr() {
-        return bonNr;
-    }
+    public long getBonNr() {return bonNr;}
+
     public Date getBestelDatum() {
         return bestelDatum;
     }
+
     public String getNaam() {
         return naam;
     }
+
     public String getStraat() {
         return straat;
     }
+
     public String getHuisNr() {
         return huisNr;
     }
+
     public String getPostcode() {
         return postcode;
     }
+
     public String getGemeente() {
         return gemeente;
     }
+
     public int getBestelWijze() {
         return bestelWijze;
     }
@@ -93,28 +98,37 @@ public class BestelBon implements Serializable {
     public void setBonNr(long bonNr) {
         this.bonNr = bonNr;
     }
+
     public void setBestelDatum(Date bestelDatum) {
         this.bestelDatum = bestelDatum;
     }
+
     public void setNaam(String naam) {
         this.naam = naam;
     }
+
     public void setStraat(String straat) {
         this.straat = straat;
     }
+
     public void setHuisNr(String huisNr) {
         this.huisNr = huisNr;
     }
+
     public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
+
     public void setGemeente(String gemeente) {
         this.gemeente = gemeente;
     }
+
     public void setBestelWijze(int bestelWijze) {
         this.bestelWijze = bestelWijze;
     }
-    public Set<BestelBonLijn> getBonLijnen() {
-        return Collections.unmodifiableSet(bestelBonLijnen);
-    }
+
+ /*   public Set<BestelBonLijnE> getBonLijnen() {
+        return Collections.unmodifiableSet(bonLijnen);
+    }*/
+
 }

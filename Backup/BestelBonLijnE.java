@@ -1,14 +1,13 @@
-package be.vdab.wijnhuis.valueobjects;
+package be.vdab.wijnhuis.entities;
 
 //Imports
-import be.vdab.wijnhuis.entities.BestelBonLijnPK;
 import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
 @Table(name="bestelbonlijnen")
 @IdClass(BestelBonLijnPK.class)
-public class BestelBonLijn implements Serializable {
+public class BestelBonLijnE implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -23,7 +22,6 @@ private long wijnNr;
 
 @Column(name="Aantal")
 private long  aantal;
-
 
 
 

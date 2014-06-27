@@ -1,16 +1,13 @@
 package be.vdab.wijnhuis.entities;
 
 import java.io.Serializable;
-import javax.persistence.Embeddable;
 
-@Embeddable
 public class BestelBonLijnPK implements Serializable {
-
     private final static long serialVersionUID = 1L;
 
-    private long bonNr, wijnNr;
-
-    protected BestelBonLijnPK() {
+    private  long bonNr, wijnNr;
+    
+    protected  BestelBonLijnPK(){
     }
 
     public BestelBonLijnPK(long bonNr, long wijnNr) {
@@ -31,25 +28,7 @@ public class BestelBonLijnPK implements Serializable {
         } catch (NullPointerException nullExc) {
             return false;
         }
-    }
 
-    //Getters
-    public long getBonNr() {
-        return bonNr;
-    }
-
-    public long getWijnNr() {
-        return wijnNr;
-    }
-    
-    //Setters
-    
-    public void setWijnNr(long wijnNr){
-        this.wijnNr = wijnNr;
-    }
-    
-        public void setBonNr(long bonNr){
-        this.bonNr = bonNr;
     }
 
 }

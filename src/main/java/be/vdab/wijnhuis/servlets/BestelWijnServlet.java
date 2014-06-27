@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.taglibs.standard.tag.common.core.NullAttributeException;
 
 @WebServlet("/wijnen/bestellen.html")
 public class BestelWijnServlet extends HttpServlet {
