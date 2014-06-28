@@ -85,7 +85,7 @@ public class BestelWijnServlet extends HttpServlet {
             //Validating AANTAL
              {
                 aantal = validateInput(aantalAsString, "Het aantal").intValue();
-                if(aantal == 0) fouten.add("Een bestelling moet minimum uit één artikel bestaan!");
+                if(aantal == 0) fouten.add("Een bestelling moet minimum uit Ã©Ã©n artikel bestaan!");
             }
 
             //Validating WIJNNR
