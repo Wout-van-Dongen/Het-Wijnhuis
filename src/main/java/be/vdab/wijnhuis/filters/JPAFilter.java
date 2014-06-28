@@ -1,4 +1,4 @@
-package be.vdab.wijnhuis.Filters;
+package be.vdab.wijnhuis.filters;
 
 //Imports
 import java.io.IOException;
