@@ -36,30 +36,63 @@ public class BestelBonLijn implements Serializable {
          */
     }
 
-    public BestelBonLijn(Wijn wijn, BestelBon bon) {
+    /*public BestelBonLijn(Wijn wijn, BestelBon bon) {
         this.bestelbon = bon;
         this.wijn = wijn;
+        wijnNr = wijn.getWijnNr();
+        bonNr = bestelbon.getBonNr();
+    }*/
+
+    public BestelBonLijn(Wijn wijn, BestelBon bon, int aantal) {
+        this.bestelbon = bon;
+        this.wijn = wijn;
+        this.aantal = aantal;
         wijnNr = wijn.getWijnNr();
         bonNr = bestelbon.getBonNr();
     }
 
     //Getters
+    public BestelBon getBestelBon() {
+        return bestelbon;
+    }
+
     public long getBonNr() {
         return bestelbon.getBonNr();
+    }
+
+    public Wijn getWijn() {
+        return wijn;
     }
 
     public long getWijnNr() {
         return wijn.getWijnNr();
     }
 
+    public long getAantal() {
+        return aantal;
+    }
+
     //Setters
+    public void setBestelBon(BestelBon bon) {
+        this.bestelbon = bon;
+        setBonNr(bestelbon.getBonNr());
+    }
 
     public void setBonNr(long bonNr) {
         this.bonNr = bonNr;
     }
 
+    public void setWijn(Wijn wijn) {
+        this.wijn = wijn;
+        setWijnNr(wijn.getWijnNr());
+    }
+
     public void setWijnNr(long wijnNr) {
         this.wijnNr = wijnNr;
+    }
+
+    public void setAantal(long aantal) {
+        this.aantal = aantal;
     }
 
 }

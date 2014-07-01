@@ -54,6 +54,11 @@ public class Wijn implements Serializable {
         bonLijnen = new LinkedHashSet<>();
     }
 
+    //Adders
+    public void addBonLijn(BestelBonLijn bonLijn) {
+        bonLijnen.add(bonLijn);
+    }
+
 // Setters
     public void setBeoordeling(int beoordeling) {
         this.beoordeling = beoordeling;

@@ -1,4 +1,4 @@
-<%@page contextType="text/html" pageEncoding="UFT-8"%>
+<%@page contextType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.servletContext.contextPath}"/>
 
@@ -17,7 +17,7 @@
 	<body>
 		<jsp:include page="/WEB-INF/jsp/includes/navigation.jsp"/>
 		<header>
-			<h1>Je Mandje is bevestigd als bestelbon ${bestelbon}</h1>
+			<h1>Je Mandje is bevestigd als bestelbon ${bonNr}</h1>
 		</header>
 	</body>
 </html>

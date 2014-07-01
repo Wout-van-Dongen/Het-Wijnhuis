@@ -1,7 +1,10 @@
 package be.vdab.wijnhuis.servlets;
 
+import be.vdab.wijnhuis.entities.BestelBon;
+import be.vdab.wijnhuis.services.BestelBonService;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,11 +16,14 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/wijnen/bevestigen.html")
 public class BevestigBestellingServlet extends HttpServlet {
 
+    //Services
+    private final BestelBonService BBONSVC = new BestelBonService();
+
     //Fouten
     private ArrayList<String> fouten;
 
     //Views
-    private final static String REDIRECT = "";
+    private final static String REDIRECT_CONFIRM = "%s/WEB-INF/jsp/pages/bevestinging.jsp?bonNr=%s";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,7 +42,8 @@ public class BevestigBestellingServlet extends HttpServlet {
                 huisnr,
                 gemeente,
                 postcode,
-                levering;
+                leveringAsString;
+        int leveringAsInteger;
 
         //Winkelmandje
         Map<Long, Integer> mandje;
@@ -50,7 +57,9 @@ public class BevestigBestellingServlet extends HttpServlet {
         huisnr = getParameter(request, "huisnr");
         gemeente = getParameter(request, "gemeente");
         postcode = getParameter(request, "postcode");
-        levering = getParameter(request, "levering");
+        leveringAsString = getParameter(request, "levering");
+
+        leveringAsInteger = 0;
 
         //Reading in the basket from the session
         try {
@@ -72,12 +81,39 @@ public class BevestigBestellingServlet extends HttpServlet {
         }
 
         //Checks if the levering has a valid value
-        if (!levering.equalsIgnoreCase("afhalen") && !levering.equalsIgnoreCase("opsturen")) {
-            fouten.add("Er is een fout opgetreden bij het registreren van uw bestelling!");
+        try {
+            leveringAsInteger = Integer.parseInt(leveringAsString);
+        } catch (NumberFormatException | NullPointerException exc) {
+            fouten.add("Er is een fout opgetreden bij het verwerken van uw bestelling!");
         }
 
-        //Assamble the order
-        //write the order to the db
+        //If there are no fouten
+        if (fouten.isEmpty() && foutenAanwezig == false) {
+            //Assamble the order
+            BestelBon bon = new BestelBon(new Date(), naam, straat, huisnr, postcode, gemeente, leveringAsInteger);
+            //write the order to the db
+            BBONSVC.create(bon, mandje);
+            
+            
+            //Remove the basket
+            request.getSession().removeAttribute("mandje");
+            request.getSession().invalidate();
+            
+            //Get the bonNr
+            Long bonNr = bon.getBonNr();
+            
+            //Redirect to the confirmation view
+            response.sendRedirect(response.encodeRedirectURL(String.format(REDIRECT_CONFIRM,request.getContextPath(), bonNr)));
+            
+        } else {
+            //If fouten did occure
+            //If the array fouten is not empty add them as attribute
+            if (!fouten.isEmpty()) {
+                setAttribute(request, "fouten", fouten);
+            }
+            
+        }
+
     }
 
     //Validates 

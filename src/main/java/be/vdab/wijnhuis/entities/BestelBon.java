@@ -39,7 +39,7 @@ public class BestelBon implements Serializable {
     @OneToMany(mappedBy = "bestelbon")
     private Set<BestelBonLijn> bestelBonLijnen;
 
- //Constructors
+    //Constructors
     protected BestelBon() {
         /**
          * Default constructor Needs to be present in JPA But is inaccessible
@@ -67,54 +67,70 @@ public class BestelBon implements Serializable {
     public long getBonNr() {
         return bonNr;
     }
+
     public Date getBestelDatum() {
         return bestelDatum;
     }
+
     public String getNaam() {
         return naam;
     }
+
     public String getStraat() {
         return straat;
     }
+
     public String getHuisNr() {
         return huisNr;
     }
+
     public String getPostcode() {
         return postcode;
     }
+
     public String getGemeente() {
         return gemeente;
     }
+
     public int getBestelWijze() {
         return bestelWijze;
+    }
+
+    public Set<BestelBonLijn> getBonLijnen() {
+        return Collections.unmodifiableSet(bestelBonLijnen);
     }
 
     //Setters
     public void setBonNr(long bonNr) {
         this.bonNr = bonNr;
     }
+
     public void setBestelDatum(Date bestelDatum) {
         this.bestelDatum = bestelDatum;
     }
+
     public void setNaam(String naam) {
         this.naam = naam;
     }
+
     public void setStraat(String straat) {
         this.straat = straat;
     }
+
     public void setHuisNr(String huisNr) {
         this.huisNr = huisNr;
     }
+
     public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
+
     public void setGemeente(String gemeente) {
         this.gemeente = gemeente;
     }
+
     public void setBestelWijze(int bestelWijze) {
         this.bestelWijze = bestelWijze;
     }
-    public Set<BestelBonLijn> getBonLijnen() {
-        return Collections.unmodifiableSet(bestelBonLijnen);
-    }
+
 }
