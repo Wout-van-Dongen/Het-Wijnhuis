@@ -6,21 +6,31 @@
 
     <c:url var="bevestigURL" value="/wijnen/bevestiging.html"/>
 
-    <form action="bevestigURL">
+    <form method="post" action="${bevestigURL}">
         <div class="input"><label>Naam:</label>
-            <input type="text" name="naam"/></div>
+            <input type="text" name="naam"/>
+            <span class="fouten"><c:if test="${not empty naamFout}">${naamFout}</c:if></span>
+        </div>
 
         <div class="input"><label>Straat:</label>
-            <input type="text" name="straat"/> </div>
+            <input type="text" name="straat"/>
+        <span class="fouten"><c:if test="${not empty straatFout}">${straatFout}</c:if></span>
+        </div>
 
         <div class="input"><label>Huisnr:</label>
-            <input type="text"  name="huisnr"/></div>
+            <input type="text"  name="huisnr"/>
+        <span class="fouten"><c:if test="${not empty huisnrFout}">${huisnrFout}</c:if></span>
+        </div>
 
         <div class="input"><label>Postcode:</label>
-            <input type="text" name="postcode"/></div>
+            <input type="text" name="postcode"/>
+        <span class="fouten"><c:if test="${not empty postcodeFout}">${postcodeFout}</c:if></span>
+        </div>
 
         <div class="input"><label>Gemeente:</label>
-            <input type="text" name="gemeente"/></div>
+            <input type="text" name="gemeente"/>
+        <span class="fouten"><c:if test="${not empty gemeenteFout}">${gemeenteFout}</c:if></span>
+        </div>
 
         <div class="input">
             <input type="radio" name="levering" value="afhalen" checked/>

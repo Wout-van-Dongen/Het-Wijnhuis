@@ -36,18 +36,50 @@ public class BestelWijnServlet extends HttpServlet {
     //Sends the wijn data to the order form ================================================================================================================
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Reseting de fouten lijst
-        fouten = new ArrayList<>();
 
-        //Reading in the 'wijn'
         Wijn wijn = null;
-        try {
-            wijn = WIJNSVC.read(Long.parseLong(request.getParameter("wijnNr")));
-            if (wijn == null) {
-                fouten.add("De door u gekozen wijn kan niet worden teruggevonden!");
+        boolean specificError = false;
+
+        //Reseting de fouten lijst
+        fouten = (ArrayList<String>) getAttribute(request, "fouten");
+
+        //Checks for specific errors
+        String straatFout = getParameter(request, "straatFout"),
+                huisnrFout = getParameter(request, "huisnrFout"),
+                gemeenteFout = getParameter(request, "gemeenteFout"),
+                postcodeFout = getParameter(request, "postcodeFout");
+
+        //If specific errors occure
+        if (straatFout != null) {
+            setAttribute(request, "straatFout", straatFout);
+            specificError = true;
+        }
+        if (huisnrFout != null) {
+            setAttribute(request, "huisnrFout", huisnrFout);
+            specificError = true;
+        }
+        if (postcodeFout != null) {
+            setAttribute(request, "postcodeFout", postcodeFout);
+            specificError = true;
+        }
+        if (gemeenteFout != null) {
+            setAttribute(request, "gemeenteFout", gemeenteFout);
+            specificError = true;
+        }
+
+        if (fouten == null) {
+            fouten = new ArrayList<>();
+            if (!specificError) {
+                //Reading in the 'wijn'
+                try {
+                    wijn = WIJNSVC.read(Long.parseLong(request.getParameter("wijnNr")));
+                    if (wijn == null) {
+                        fouten.add("De door u gekozen wijn kan niet worden teruggevonden!");
+                    }
+                } catch (NumberFormatException numExc) {
+                    fouten.add("De meegegeven referentie is van een ongeldig type");
+                }
             }
-        } catch (NumberFormatException numExc) {
-            fouten.add("De meegegeven referentie is van een ongeldig type");
         }
 
         //Voegt de fouten toe aan de request (wanneer er fouten zijn)
@@ -55,7 +87,9 @@ public class BestelWijnServlet extends HttpServlet {
             setAttribute(request, "fouten", fouten);
             forwardRequest(request, response, "/");
         } else {
-            setAttribute(request, "wijn", wijn);
+            if (wijn != null) {
+                setAttribute(request, "wijn", wijn);
+            }
             forwardRequest(request, response, VIEW);
         }
 
@@ -65,67 +99,72 @@ public class BestelWijnServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Reseting de fouten lijst
+
         fouten = new ArrayList<>();
 
         //Numbers
         int aantal = 0;
         long wijnNr = 0;
-        
-         //Winkelmandje
+
+        //Bool
+        boolean specificError = false;
+
+        //Winkelmandje
         Map<Long, Integer> winkelmandje;
 
         //Getting Attributes
         String aantalAsString = request.getParameter("aantal");
         String wijnNrAsString = request.getParameter("wijnNr");
-        
-        winkelmandje =  (Map<Long, Integer>)getSessionAttribute(request, "winkelmandje");
-        if(winkelmandje == null) winkelmandje = new LinkedHashMap<>();
-        
-        
-            //Validating AANTAL
-             {
-                aantal = validateInput(aantalAsString, "Het aantal").intValue();
-                if(aantal == 0) fouten.add("Een bestelling moet minimum uit één artikel bestaan!");
+
+        winkelmandje = (Map<Long, Integer>) getSessionAttribute(request, "winkelmandje");
+        if (winkelmandje == null) {
+            winkelmandje = new LinkedHashMap<>();
+        }
+
+        //Validating AANTAL
+        aantal = validateInput(aantalAsString, "Het aantal").intValue();
+        if (aantal == 0) {
+            fouten.add("Een bestelling moet minimum uit één artikel bestaan!");
+        }
+
+        //Validating WIJNNR
+        {
+            wijnNr = validateInput(wijnNrAsString, "Het wijnnr");
+            if (!wijnExists(wijnNr)) {
+                fouten.add("De door u gekozen wijn kan niet worden teruggevonden in ons assortiment!");
             }
+        }
 
-            //Validating WIJNNR
-                {
-                wijnNr = validateInput(wijnNrAsString, "Het wijnnr");
-                if(!wijnExists(wijnNr)) fouten.add("De door u gekozen wijn kan niet worden teruggevonden in ons assortiment!");
-                 } 
+        //If there are errors return them to the 'bestellen' page
+        if (!fouten.isEmpty()) {
+            setAttribute(request, "fouten", fouten);
+            forwardRequest(request, response, VIEW);
 
-            //If there are errors return them to the 'bestellen' page
-            if (!fouten.isEmpty()) {
-                setAttribute(request, "fouten", fouten);
-                forwardRequest(request, response, VIEW);
+            //Als er geen fouten zijn
+        } else {
 
-                //Als er geen fouten zijn
-            } else {
-
-                //checks if the wijn is already present in the order
-                //if it is then add the ammount to the current one
-                try{
+            //checks if the wijn is already present in the order
+            //if it is then add the ammount to the current one
+            try {
                 if (winkelmandje.containsKey(wijnNr)) {
                     winkelmandje.put(wijnNr, winkelmandje.get(wijnNr) + aantal);
                     //else add the wijn with the current ammount
                 } else {
-                   winkelmandje.put(wijnNr, aantal);
+                    winkelmandje.put(wijnNr, aantal);
                 }
-                }catch(NullPointerException nullExc){
-                    System.err.println(nullExc);
-                }
-
+            } catch (NullPointerException nullExc) {
+                System.err.println(nullExc);
             }
-            setSessionAttribute(request, "winkelmandje", winkelmandje);
-            response.sendRedirect(request.getContextPath() + response.encodeRedirectURL(REDIRECT));
 
         }
+        setSessionAttribute(request, "winkelmandje", winkelmandje);
+        response.sendRedirect(request.getContextPath() + response.encodeRedirectURL(REDIRECT));
 
-    
-    
+    }
+
     //Wijn exists
-    private boolean wijnExists(long wijnNr){
-    return !(WIJNSVC.read(wijnNr)==null);
+    private boolean wijnExists(long wijnNr) {
+        return !(WIJNSVC.read(wijnNr) == null);
     }
 
     //Validating input
@@ -152,6 +191,16 @@ public class BestelWijnServlet extends HttpServlet {
     //Sets the request Attribute
     private void setAttribute(HttpServletRequest request, String name, Object attribute) {
         request.setAttribute(name, attribute);
+    }
+
+    //Gets the request Attribute
+    private Object getAttribute(HttpServletRequest request, String name) {
+        return request.getAttribute(name);
+    }
+
+    //Gets the request Parameter
+    private String getParameter(HttpServletRequest request, String name) {
+        return request.getParameter(name);
     }
 
     //Sets the session Attribute

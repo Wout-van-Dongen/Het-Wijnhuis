@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("/wijnen/bevestigen.html")
+@WebServlet("/wijnen/bevestiging.html")
 public class BevestigBestellingServlet extends HttpServlet {
 
     //Services
@@ -21,9 +21,12 @@ public class BevestigBestellingServlet extends HttpServlet {
 
     //Fouten
     private ArrayList<String> fouten;
+    private String attributeList = "";
 
     //Views
-    private final static String REDIRECT_CONFIRM = "%s/WEB-INF/jsp/pages/bevestinging.jsp?bonNr=%s";
+    private final static String REDIRECT_CONFIRM = "%s/WEB-INF/jsp/pages/bevestinging.jsp?bonNr=%s",
+            VIEW = "/wijnen/bestellen.html",
+            TEST = "/WEB-INF/jsp/pages/bevestiging.jsp";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,7 +51,7 @@ public class BevestigBestellingServlet extends HttpServlet {
         //Winkelmandje
         Map<Long, Integer> mandje;
 
-//Fouten
+        //Fouten
         Boolean foutenAanwezig = false;
 
         //Reading in the attributes
@@ -93,25 +96,23 @@ public class BevestigBestellingServlet extends HttpServlet {
             BestelBon bon = new BestelBon(new Date(), naam, straat, huisnr, postcode, gemeente, leveringAsInteger);
             //write the order to the db
             BBONSVC.create(bon, mandje);
-            
-            
+
             //Remove the basket
             request.getSession().removeAttribute("mandje");
             request.getSession().invalidate();
-            
+
             //Get the bonNr
             Long bonNr = bon.getBonNr();
-            
+
             //Redirect to the confirmation view
-            response.sendRedirect(response.encodeRedirectURL(String.format(REDIRECT_CONFIRM,request.getContextPath(), bonNr)));
-            
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + TEST + "?bonNr=" + bonNr));
+            //String.format(REDIRECT_CONFIRM, request.getContextPath(), bonNr
+
         } else {
             //If fouten did occure
             //If the array fouten is not empty add them as attribute
-            if (!fouten.isEmpty()) {
-                setAttribute(request, "fouten", fouten);
-            }
-            
+           
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + VIEW + "?" + attributeList +  "fouten="+fouten ));
         }
 
     }
@@ -119,7 +120,7 @@ public class BevestigBestellingServlet extends HttpServlet {
     //Validates 
     private void validateAttribute(HttpServletRequest request, String attribute, String attributeName, Boolean foutenAanwezig) {
         if (attribute == null) {
-            setAttribute(request, String.format("%sFout", attributeName.toLowerCase()), String.format("%s moet ingevuld zijn!", attributeName));
+            attributeList = String.format("%sFout", attributeName.toLowerCase()) + "=" + String.format("%s moet ingevuld zijn!", attributeName) + "&";
             foutenAanwezig = true;
         }
     }
