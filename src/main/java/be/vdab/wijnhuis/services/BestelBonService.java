@@ -13,20 +13,31 @@ public class BestelBonService {
     private final BestelBonDAO BONDOA = new BestelBonDAO();
     private final WijnenDAO WIJNDAO = new WijnenDAO();
 
-    //Entities
-    private BestelBonLijn bonlijn;
-
     public void create(BestelBon bon, Map<Long, Integer> mandje) {
+
+        BestelBon bestelbon = bon;
+
+        //For every wijn in the basket...
+        for (Map.Entry<Long, Integer> entry : mandje.entrySet()) {
+            BestelBonLijn bestelbonLijn;
+            Wijn wijn;
+
+            //Read in the wijn
+            wijn = WIJNDAO.read(entry.getKey());
+
+            //Create a new  bestelbonlijn using the bon and  current wijn    
+            bestelbonLijn = new BestelBonLijn(wijn, bon, entry.getValue());
+
+            //Add the bestelbonLijn to the array in bestelbon
+            bon.addBonLijn(bestelbonLijn);
+            //Add the bestelbonLijn to the array in bestelbon
+            wijn.addBonLijn(bestelbonLijn);
+        }
+        //Begins the transaction
         BONDOA.beginTransaction();
+        //Tells hibernate to add the bestelbon to the database
         BONDOA.create(bon);
-        
-            for (Map.Entry<Long, Integer> entry : mandje.entrySet()) {
-                Wijn wijn = WIJNDAO.read(entry.getKey());
-                bonlijn = new BestelBonLijn(wijn, bon, entry.getValue());
-                bon.addBonLijn(bonlijn);
-                wijn.addBonLijn(bonlijn);
-                }
-                
+        //confirm the transaction
         BONDOA.commit();
     }
 
