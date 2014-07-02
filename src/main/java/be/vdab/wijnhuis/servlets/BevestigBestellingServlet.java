@@ -70,7 +70,7 @@ public class BevestigBestellingServlet extends HttpServlet {
 
         leveringAsInteger = 0;
         //Reading in the basket from the session
-         
+
         try {
             winkelmandje = (Map<Long, Integer>) getSessionAttribute(request, "winkelmandje");
         } catch (ClassCastException exc) {
@@ -78,8 +78,8 @@ public class BevestigBestellingServlet extends HttpServlet {
         }
 
         //Validate the attributes
-       naamFout=  validateAttribute(request, naam, "Naam" );
-       straatFout = validateAttribute(request, straat, "Straat");
+        naamFout = validateAttribute(request, naam, "Naam");
+        straatFout = validateAttribute(request, straat, "Straat");
         huisnrFout = validateAttribute(request, huisnr, "Huisnr");
         gemeenteFout = validateAttribute(request, gemeente, "Gemeente");
         postcodeFout = validateAttribute(request, postcode, "Postcode");
@@ -112,19 +112,20 @@ public class BevestigBestellingServlet extends HttpServlet {
 
             //Redirect to the confirmation view
             response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + REDIRECT_CONFIRM + "?bonNr=" + bonNr));
-            //String.format(REDIRECT_CONFIRM, request.getContextPath(), bonNr
 
         } else {
             //If fouten did occure
             //If the array fouten is not empty add them as attribute
 
-            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + FOUTEN + "?" + "fouten=" + fouten 
-                    +(naamFout == null? "&naam=" + naam:"&naamFout=" + naamFout) 
-                           +(straatFout == null? "&straat=" + straat:"&straatFout=" + straatFout) 
-                    +(huisnrFout == null? "&huisnr=" + huisnr:"&huisnrFout=" + huisnrFout) 
-                    +(postcodeFout == null? "postcode=" + postcode:"&postcodeFout=" + postcodeFout) 
-                    +(gemeenteFout == null? "gemeente=" + gemeente:"&gemeenteFout=" + gemeenteFout))) ;
-                          }
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + FOUTEN + "?"
+                    + (naamFout == null ? "naam=" + naam : "naamFout=" + naamFout)
+                    + (straatFout == null ? "&straat=" + straat : "&straatFout=" + straatFout)
+                    + (huisnrFout == null ? "&huisnr=" + huisnr : "&huisnrFout=" + huisnrFout)
+                    + (postcodeFout == null ? "&postcode=" + postcode : "&postcodeFout=" + postcodeFout)
+                    + (gemeenteFout == null ? "&gemeente=" + gemeente : "&gemeenteFout=" + gemeenteFout)
+                    + (fouten == null ? "" : "&fouten=" + fouten)
+            ));
+        }
 
     }
 

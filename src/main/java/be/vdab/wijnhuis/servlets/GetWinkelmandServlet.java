@@ -5,6 +5,7 @@ import be.vdab.wijnhuis.entities.Wijn;
 import be.vdab.wijnhuis.services.WijnenService;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -31,7 +32,16 @@ public class GetWinkelmandServlet extends HttpServlet {
         boolean specificError = false;
 
         //Getting the  fouten lijst
-        fouten = (ArrayList<String>) getAttribute(request, "fouten");
+        String foutenAsString = getParameter(request, "fouten");
+      
+        String[] foutenAsArray;
+        if (foutenAsString != null) {
+             foutenAsString =   foutenAsString.substring(1, foutenAsString.length()-1);
+            foutenAsArray = foutenAsString.split(",");
+               fouten =  new ArrayList<>(Arrays.asList(foutenAsArray));
+        } else {
+            fouten = new ArrayList<>();
+        }
 
         //Checks for specific errors
         String naamFout = getParameter(request, "naamFout"),
@@ -74,12 +84,6 @@ public class GetWinkelmandServlet extends HttpServlet {
             setAttribute(request, "gemeente", gemeente);
         }
 
-        //Wanneer er geen fouten opgetreden zijn 
-        if (fouten == null) {
-            //Resetting fouten
-            fouten = new ArrayList<>();
-        }
-
         //Winkelmandje
         Map<Long, Integer> sessionMandje;
         Map<Wijn, Integer> weergaveMandje;
@@ -96,7 +100,6 @@ public class GetWinkelmandServlet extends HttpServlet {
                 }
             }
         }
-        fouten.add("this be a test error!!!");
         if (!fouten.isEmpty()) {
             setAttribute(request, "fouten", fouten);
         }
