@@ -38,38 +38,8 @@ public class BestelWijnServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Wijn wijn = null;
-        boolean specificError = false;
 
-        //Reseting de fouten lijst
-        fouten = (ArrayList<String>) getAttribute(request, "fouten");
-
-        //Checks for specific errors
-        String straatFout = getParameter(request, "straatFout"),
-                huisnrFout = getParameter(request, "huisnrFout"),
-                gemeenteFout = getParameter(request, "gemeenteFout"),
-                postcodeFout = getParameter(request, "postcodeFout");
-
-        //If specific errors occure
-        if (straatFout != null) {
-            setAttribute(request, "straatFout", straatFout);
-            specificError = true;
-        }
-        if (huisnrFout != null) {
-            setAttribute(request, "huisnrFout", huisnrFout);
-            specificError = true;
-        }
-        if (postcodeFout != null) {
-            setAttribute(request, "postcodeFout", postcodeFout);
-            specificError = true;
-        }
-        if (gemeenteFout != null) {
-            setAttribute(request, "gemeenteFout", gemeenteFout);
-            specificError = true;
-        }
-
-        if (fouten == null) {
             fouten = new ArrayList<>();
-            if (!specificError) {
                 //Reading in the 'wijn'
                 try {
                     wijn = WIJNSVC.read(Long.parseLong(request.getParameter("wijnNr")));
@@ -79,8 +49,8 @@ public class BestelWijnServlet extends HttpServlet {
                 } catch (NumberFormatException numExc) {
                     fouten.add("De meegegeven referentie is van een ongeldig type");
                 }
-            }
-        }
+            
+        
 
         //Voegt de fouten toe aan de request (wanneer er fouten zijn)
         if (!fouten.isEmpty()) {

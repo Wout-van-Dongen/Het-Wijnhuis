@@ -20,9 +20,10 @@
         <header>
             <h1>Mandje ${winkelmandje.size}</h1>
         </header>
-
+            <jsp:include page="/WEB-INF/jsp/includes/fouten.jsp"/>
             <jsp:include page="/WEB-INF/jsp/includes/mandje.jsp"/>
             <jsp:include page="/WEB-INF/jsp/includes/formulier.jsp"/>
+
             
             
     </body>

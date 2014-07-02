@@ -19,47 +19,106 @@ public class GetWinkelmandServlet extends HttpServlet {
 
     //Fouten
     private ArrayList<String> fouten;
-    
+
     //Services
     private final WijnenService WIJNSVC = new WijnenService();
 
-    
     //VIEWS
     private static final String VIEW = "/WEB-INF/jsp/pages/winkelmand.jsp";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//Resetting fouten
-        fouten = new ArrayList<>();
+        boolean specificError = false;
+
+        //Getting the  fouten lijst
+        fouten = (ArrayList<String>) getAttribute(request, "fouten");
+
+        //Checks for specific errors
+        String naamFout = getParameter(request, "naamFout"),
+                straatFout = getParameter(request, "straatFout"),
+                huisnrFout = getParameter(request, "huisnrFout"),
+                gemeenteFout = getParameter(request, "gemeenteFout"),
+                postcodeFout = getParameter(request, "postcodeFout");
+
+        //Gets the filled in values
+        String naam = getParameter(request, "naam"),
+                straat = getParameter(request, "straat"),
+                huisnr = getParameter(request, "huisnr"),
+                gemeente = getParameter(request, "gemeente"),
+                postcode = getParameter(request, "postcode");
+
+        //If specific errors occure
+        if (naamFout != null && !naamFout.equals("null")) {
+            setAttribute(request, "naamFout", naamFout);
+        } else if (naam != null) {
+            setAttribute(request, "naam", naam);
+        }
+        if (straatFout != null && !straatFout.equals("null")) {
+            setAttribute(request, "straatFout", straatFout);
+        } else if (straat != null) {
+            setAttribute(request, "straat", straat);
+        }
+        if (huisnrFout != null && !huisnrFout.equals("null")) {
+            setAttribute(request, "huisnrFout", huisnrFout);
+        } else if (huisnr != null) {
+            setAttribute(request, "huisnr", huisnr);
+        }
+        if (postcodeFout != null && !postcodeFout.equals("null")) {
+            setAttribute(request, "postcodeFout", postcodeFout);
+        } else if (postcode != null) {
+            setAttribute(request, "postcode", postcode);
+        }
+        if (gemeenteFout != null && !gemeenteFout.equals("null")) {
+            setAttribute(request, "gemeenteFout", gemeenteFout);
+        } else if (gemeente != null) {
+            setAttribute(request, "gemeente", gemeente);
+        }
+
+        //Wanneer er geen fouten opgetreden zijn 
+        if (fouten == null) {
+            //Resetting fouten
+            fouten = new ArrayList<>();
+        }
 
         //Winkelmandje
         Map<Long, Integer> sessionMandje;
         Map<Wijn, Integer> weergaveMandje;
-        
-  
-        
-        
+
         weergaveMandje = new LinkedHashMap<>();
         sessionMandje = (Map<Long, Integer>) getSessionAttribute(request, "winkelmandje");
         if (sessionMandje != null) {
             for (Map.Entry<Long, Integer> entry : sessionMandje.entrySet()) {
-                Wijn wijn =WIJNSVC.read(entry.getKey());
-                if(wijn != null){
+                Wijn wijn = WIJNSVC.read(entry.getKey());
+                if (wijn != null) {
                     weergaveMandje.put(wijn, entry.getValue());
-                }else{
-                fouten.add("Kan de wijn met het nummer " + entry.getKey() +" niet terugvinden in ons assortiment");
+                } else {
+                    fouten.add("Kan de wijn met het nummer " + entry.getKey() + " niet terugvinden in ons assortiment");
                 }
             }
         }
+        fouten.add("this be a test error!!!");
+        if (!fouten.isEmpty()) {
+            setAttribute(request, "fouten", fouten);
+        }
 
         setAttribute(request, "winkelmandje", weergaveMandje);
-
         forwardRequest(request, response, VIEW);
+    }
+
+//======================================================================================================================================
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    //Gets the request Attribute
+    private Object getAttribute(HttpServletRequest request, String name) {
+        return request.getAttribute(name);
+    }
+
+    //Gets the request Parameter
+    private String getParameter(HttpServletRequest request, String name) {
+        return request.getParameter(name);
     }
 
     //Sets the request Attribute

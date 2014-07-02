@@ -21,12 +21,10 @@ public class BevestigBestellingServlet extends HttpServlet {
 
     //Fouten
     private ArrayList<String> fouten;
-    private String attributeList = "";
 
     //Views
-    private final static String REDIRECT_CONFIRM = "%s/WEB-INF/jsp/pages/bevestinging.jsp?bonNr=%s",
-            VIEW = "/wijnen/bestellen.html",
-            TEST = "/WEB-INF/jsp/pages/bevestiging.jsp";
+    private final static String REDIRECT_CONFIRM = "/wijnen/bevestiging.html",
+            FOUTEN = "/wijnen/winkelmandje.html";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,10 +44,18 @@ public class BevestigBestellingServlet extends HttpServlet {
                 gemeente,
                 postcode,
                 leveringAsString;
+
         int leveringAsInteger;
 
+        //Fouten
+        String naamFout = null,
+                straatFout = null,
+                huisnrFout = null,
+                gemeenteFout = null,
+                postcodeFout = null;
+
         //Winkelmandje
-        Map<Long, Integer> mandje;
+        Map<Long, Integer> winkelmandje;
 
         //Fouten
         Boolean foutenAanwezig = false;
@@ -63,23 +69,23 @@ public class BevestigBestellingServlet extends HttpServlet {
         leveringAsString = getParameter(request, "levering");
 
         leveringAsInteger = 0;
-
         //Reading in the basket from the session
+         
         try {
-            mandje = (Map<Long, Integer>) getSessionAttribute(request, "mandje");
+            winkelmandje = (Map<Long, Integer>) getSessionAttribute(request, "winkelmandje");
         } catch (ClassCastException exc) {
-            mandje = null;
+            winkelmandje = null;
         }
 
         //Validate the attributes
-        validateAttribute(request, naam, "Naam", foutenAanwezig);
-        validateAttribute(request, straat, "Straat", foutenAanwezig);
-        validateAttribute(request, huisnr, "Huisnr", foutenAanwezig);
-        validateAttribute(request, gemeente, "Gemeente", foutenAanwezig);
-        validateAttribute(request, postcode, "Postcode", foutenAanwezig);
+       naamFout=  validateAttribute(request, naam, "Naam" );
+       straatFout = validateAttribute(request, straat, "Straat");
+        huisnrFout = validateAttribute(request, huisnr, "Huisnr");
+        gemeenteFout = validateAttribute(request, gemeente, "Gemeente");
+        postcodeFout = validateAttribute(request, postcode, "Postcode");
 
         //Validates mandje
-        if (mandje == null) {
+        if (winkelmandje == null) {
             fouten.add("U heeft geen producten besteld!");
         }
 
@@ -95,7 +101,7 @@ public class BevestigBestellingServlet extends HttpServlet {
             //Assamble the order
             BestelBon bon = new BestelBon(new Date(), naam, straat, huisnr, postcode, gemeente, leveringAsInteger);
             //write the order to the db
-            BBONSVC.create(bon, mandje);
+            BBONSVC.create(bon, winkelmandje);
 
             //Remove the basket
             request.getSession().removeAttribute("mandje");
@@ -105,24 +111,29 @@ public class BevestigBestellingServlet extends HttpServlet {
             Long bonNr = bon.getBonNr();
 
             //Redirect to the confirmation view
-            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + TEST + "?bonNr=" + bonNr));
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + REDIRECT_CONFIRM + "?bonNr=" + bonNr));
             //String.format(REDIRECT_CONFIRM, request.getContextPath(), bonNr
 
         } else {
             //If fouten did occure
             //If the array fouten is not empty add them as attribute
-           
-            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + VIEW + "?" + attributeList +  "fouten="+fouten ));
-        }
+
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + FOUTEN + "?" + "fouten=" + fouten 
+                    +(naamFout == null? "&naam=" + naam:"&naamFout=" + naamFout) 
+                           +(straatFout == null? "&straat=" + straat:"&straatFout=" + straatFout) 
+                    +(huisnrFout == null? "&huisnr=" + huisnr:"&huisnrFout=" + huisnrFout) 
+                    +(postcodeFout == null? "postcode=" + postcode:"&postcodeFout=" + postcodeFout) 
+                    +(gemeenteFout == null? "gemeente=" + gemeente:"&gemeenteFout=" + gemeenteFout))) ;
+                          }
 
     }
 
     //Validates 
-    private void validateAttribute(HttpServletRequest request, String attribute, String attributeName, Boolean foutenAanwezig) {
-        if (attribute == null) {
-            attributeList = String.format("%sFout", attributeName.toLowerCase()) + "=" + String.format("%s moet ingevuld zijn!", attributeName) + "&";
-            foutenAanwezig = true;
+    private String validateAttribute(HttpServletRequest request, String attribute, String attributeName) {
+        if (attribute == null || attribute.equals("")) {
+            return String.format("%s moet ingevuld zijn!", attributeName);
         }
+        return null;
     }
 
     //Sets the request Attribute
