@@ -20,12 +20,13 @@ public class BestelBonLijn implements Serializable {
     @Column(name = "Aantal")
     private long aantal;
 
-    @ManyToOne
-    @JoinColumn(name = "BonNr")
+    @ManyToOne    @JoinColumn(name = "BonNr")
+   // @Transient
     private BestelBon bestelbon;
 
     @ManyToOne
     @JoinColumn(name = "WijnNr")
+  //  @Transient
     private Wijn wijn;
 
 //Constructors

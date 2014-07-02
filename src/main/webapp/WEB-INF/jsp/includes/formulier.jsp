@@ -38,11 +38,11 @@
         </div>
 
         <div class="input">
-            <input type="radio" name="levering" value="afhalen" checked/>
+            <input type="radio" name="levering" value="0" checked/>
             <label>Afhalen</label>
         </div>
         <div class="input">
-            <input type="radio" name="levering" value="opsturen"/>
+            <input type="radio" name="levering" value="1"/>
             <label>Opsturen</label>
         </div>
 

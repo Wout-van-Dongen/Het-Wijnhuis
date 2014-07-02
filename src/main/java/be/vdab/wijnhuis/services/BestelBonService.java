@@ -19,12 +19,14 @@ public class BestelBonService {
     public void create(BestelBon bon, Map<Long, Integer> mandje) {
         BONDOA.beginTransaction();
         BONDOA.create(bon);
-        for (Map.Entry<Long, Integer> entry : mandje.entrySet()) {
-            Wijn wijn = WIJNDAO.read(entry.getKey());
-            bonlijn = new BestelBonLijn(wijn, bon, entry.getValue());
-            bon.addBonLijn(bonlijn);
-            wijn.addBonLijn(bonlijn);
-        }
+        
+            for (Map.Entry<Long, Integer> entry : mandje.entrySet()) {
+                Wijn wijn = WIJNDAO.read(entry.getKey());
+                bonlijn = new BestelBonLijn(wijn, bon, entry.getValue());
+                bon.addBonLijn(bonlijn);
+                wijn.addBonLijn(bonlijn);
+                }
+                
         BONDOA.commit();
     }
 
