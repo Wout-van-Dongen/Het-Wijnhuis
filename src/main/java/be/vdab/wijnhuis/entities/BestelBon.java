@@ -2,9 +2,12 @@ package be.vdab.wijnhuis.entities;
 
 //Imports
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -36,8 +39,10 @@ public class BestelBon implements Serializable {
     private String gemeente;
     @Column(name = "BestelWijze")
     private int bestelWijze;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bestelbon")
-    private Set<BestelBonLijn> bestelBonLijnen;
+    
+    Map<Wijn,Long> wijnen;
+    
+    
 
     //Constructors
     protected BestelBon() {
@@ -55,12 +60,12 @@ public class BestelBon implements Serializable {
         this.postcode = postcode;
         this.gemeente = gemeente;
         this.bestelWijze = bestelWijze;
-        bestelBonLijnen = new LinkedHashSet<>();
+        wijnen = new LinkedHashMap<>();
     }
 
     //Adders
-    public void addBonLijn(BestelBonLijn bonLijn) {
-        bestelBonLijnen.add(bonLijn);
+    public void addWijn(Wijn wijn,  long aantal) {
+        wijnen.put(wijn, aantal);
     }
 
     //Getters
@@ -96,8 +101,8 @@ public class BestelBon implements Serializable {
         return bestelWijze;
     }
 
-    public Set<BestelBonLijn> getBonLijnen() {
-        return Collections.unmodifiableSet(bestelBonLijnen);
+    public Map<Wijn,Long> getWijnen() {
+        return Collections.unmodifiableMap(wijnen);
     }
 
     //Setters

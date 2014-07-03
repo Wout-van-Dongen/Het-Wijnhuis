@@ -33,8 +33,10 @@ public class Wijn implements Serializable {
     @JoinColumn(name = "SoortNr")
     private Soort soort;
 
+    /*
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "wijn")
     private Set<BestelBonLijn> bonLijnen;
+    */
 
     protected Wijn() {
         /**
@@ -52,13 +54,13 @@ public class Wijn implements Serializable {
         setBesteld(besteld);
         setPrijs(prijs);
 
-        bonLijnen = new LinkedHashSet<>();
+        //bonLijnen = new LinkedHashSet<>();
     }
 
     //Adders
-    public void addBonLijn(BestelBonLijn bonLijn) {
-        bonLijnen.add(bonLijn);
-    }
+   // public void addBonLijn(BestelBonLijn bonLijn) {
+       // bonLijnen.add(bonLijn);
+  //  }
 
 // Setters
     public void setBeoordeling(int beoordeling) {
