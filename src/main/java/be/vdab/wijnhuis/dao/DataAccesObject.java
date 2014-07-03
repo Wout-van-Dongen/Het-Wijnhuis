@@ -22,9 +22,9 @@ public abstract class DataAccesObject {
     public void rollback() {
         getEntityManager().getTransaction().rollback();
     }
-    
-    public void create(Object obj){
-    getEntityManager().persist(obj);
+
+    public void create(Object obj) {
+        getEntityManager().persist(obj);
     }
 
 }

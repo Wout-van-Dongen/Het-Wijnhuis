@@ -33,7 +33,7 @@ public class Wijn implements Serializable {
     @JoinColumn(name = "SoortNr")
     private Soort soort;
 
-    @OneToMany(mappedBy = "wijn")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wijn")
     private Set<BestelBonLijn> bonLijnen;
 
     protected Wijn() {
@@ -44,6 +44,7 @@ public class Wijn implements Serializable {
     }
 
     // Actual constructor
+    @SuppressWarnings({"OverridableMethodCallInConstructor", "javadoc"})
     public Wijn(int jaar, Soort soort, int beoordeling, int besteld, BigDecimal prijs) {
         setJaar(jaar);
         setSoort(soort);

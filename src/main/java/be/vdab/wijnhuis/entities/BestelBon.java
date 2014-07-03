@@ -36,7 +36,7 @@ public class BestelBon implements Serializable {
     private String gemeente;
     @Column(name = "BestelWijze")
     private int bestelWijze;
-    @OneToMany(mappedBy = "bestelbon")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bestelbon")
     private Set<BestelBonLijn> bestelBonLijnen;
 
     //Constructors

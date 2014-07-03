@@ -20,13 +20,12 @@ public class BestelBonLijn implements Serializable {
     @Column(name = "Aantal")
     private long aantal;
 
-    @ManyToOne    @JoinColumn(name = "BonNr")
-  // @Transient
+    @ManyToOne
+    @JoinColumn(name = "BonNr")
     private BestelBon bestelbon;
 
     @ManyToOne
     @JoinColumn(name = "WijnNr")
-  //@Transient
     private Wijn wijn;
 
 //Constructors
@@ -37,19 +36,12 @@ public class BestelBonLijn implements Serializable {
          */
     }
 
-    public BestelBonLijn(Wijn wijn, BestelBon bon) {
-        this.bestelbon = bon;
-        this.wijn = wijn;
-        wijnNr = wijn.getWijnNr();
-        bonNr = bestelbon.getBonNr();
-    }
 
+    @SuppressWarnings({"OverridableMethodCallInConstructor", "javadoc"})
     public BestelBonLijn(Wijn wijn, BestelBon bon, int aantal) {
-        this.bestelbon = bon;
-        this.wijn = wijn;
-        this.aantal = aantal;
-        wijnNr = wijn.getWijnNr();
-        bonNr = bestelbon.getBonNr();
+        this.setBestelBon(bon);
+        this.setWijn(wijn);
+        this.setAantal(aantal);
     }
 
     //Getters
