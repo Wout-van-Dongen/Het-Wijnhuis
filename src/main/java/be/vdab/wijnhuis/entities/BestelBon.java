@@ -48,7 +48,7 @@ public class BestelBon implements Serializable {
     }
 
     public BestelBon(Date bestelDatum, String naam, String straat, String huisNr, String postcode, String gemeente, int bestelWijze) {
-        this.bestelDatum = bestelDatum;
+        this.bestelDatum = (Date)bestelDatum.clone();
         this.naam = naam;
         this.straat = straat;
         this.huisNr = huisNr;
@@ -69,7 +69,7 @@ public class BestelBon implements Serializable {
     }
 
     public Date getBestelDatum() {
-        return bestelDatum;
+        return (Date) bestelDatum.clone();
     }
 
     public String getNaam() {
@@ -106,7 +106,7 @@ public class BestelBon implements Serializable {
     }
 
     public void setBestelDatum(Date bestelDatum) {
-        this.bestelDatum = bestelDatum;
+        this.bestelDatum = (Date)bestelDatum.clone();
     }
 
     public void setNaam(String naam) {

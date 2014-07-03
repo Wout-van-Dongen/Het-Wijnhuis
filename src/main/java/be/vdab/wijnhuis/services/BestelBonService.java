@@ -35,6 +35,10 @@ public class BestelBonService {
         }
         //Begins the transaction
         BONDOA.beginTransaction();
+        int i=0;
+        i++;
+        BONDOA.commit();
+        BONDOA.beginTransaction();
         //Tells hibernate to add the bestelbon to the database
         BONDOA.create(bon);
         //confirm the transaction
