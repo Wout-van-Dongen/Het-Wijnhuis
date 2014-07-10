@@ -1,11 +1,12 @@
 package be.vdab.wijnhuis.dao;
 
 //Imports
-import be.vdab.wijnhuis.Filters.JPAFilter;
+import be.vdab.wijnhuis.filters.JPAFilter;
 import javax.persistence.EntityManager;
 
 //Abstract class
 public abstract class DataAccesObject {
+
 
     protected EntityManager getEntityManager() {
         return JPAFilter.getManager();
@@ -13,6 +14,7 @@ public abstract class DataAccesObject {
 
     public void beginTransaction() {
         getEntityManager().getTransaction().begin();
+
     }
 
     public void commit() {
