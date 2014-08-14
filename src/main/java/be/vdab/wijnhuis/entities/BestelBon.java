@@ -2,7 +2,6 @@ package be.vdab.wijnhuis.entities;
 
 //Imports
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -39,11 +38,17 @@ public class BestelBon implements Serializable {
     private String gemeente;
     @Column(name = "BestelWijze")
     private int bestelWijze;
-    
-    Map<Wijn,Long> wijnen;
-    
-    
 
+ @ElementCollection
+@CollectionTable(name="bestelbonlijnen",joinColumns= @JoinColumn(name="BonNr"))
+@OrderBy("wijn.soort.land.naam")
+            name = "bestelbonlijnen",
+            joinColumns = @JoinColumn(name = "BonNr"),
+            inverseJoinColumns = @JoinColumn(name = "WijnNr")
+    )
+   
+
+    
     //Constructors
     protected BestelBon() {
         /**
@@ -53,19 +58,21 @@ public class BestelBon implements Serializable {
     }
 
     public BestelBon(Date bestelDatum, String naam, String straat, String huisNr, String postcode, String gemeente, int bestelWijze) {
-        this.bestelDatum = (Date)bestelDatum.clone();
+        this.bestelDatum = (Date) bestelDatum.clone();
         this.naam = naam;
         this.straat = straat;
         this.huisNr = huisNr;
         this.postcode = postcode;
         this.gemeente = gemeente;
         this.bestelWijze = bestelWijze;
-        wijnen = new LinkedHashMap<>();
+
+        wijnen = new LinkedHashSet<>();
     }
 
     //Adders
-    public void addWijn(Wijn wijn,  long aantal) {
-        wijnen.put(wijn, aantal);
+    public void addWijn(Wijn wijn, long aantal) {
+
+        wijnen.add(wijn);
     }
 
     //Getters
@@ -101,8 +108,9 @@ public class BestelBon implements Serializable {
         return bestelWijze;
     }
 
-    public Map<Wijn,Long> getWijnen() {
-        return Collections.unmodifiableMap(wijnen);
+    
+    public Set<Wijn> getWijnen(){
+    return Collections.unmodifiableSet(wijnen);
     }
 
     //Setters
@@ -111,7 +119,7 @@ public class BestelBon implements Serializable {
     }
 
     public void setBestelDatum(Date bestelDatum) {
-        this.bestelDatum = (Date)bestelDatum.clone();
+        this.bestelDatum = (Date) bestelDatum.clone();
     }
 
     public void setNaam(String naam) {

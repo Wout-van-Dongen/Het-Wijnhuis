@@ -27,8 +27,7 @@
         <header>
             <h1> Wijn toevoegen aan mandje </h1>
         </header>
-                <section class ="form">
-                    ${contextPath}                    
+                <section class ="form">           
                     <label > Land </label>
                     <span >${wijn.soort.land.naam}</span>
                     <label > Soort </label>

@@ -6,8 +6,11 @@ import be.vdab.wijnhuis.entities.BestelBon;
 import be.vdab.wijnhuis.entities.Wijn;
 import java.util.Map;
 
+
 public class BestelBonService {
 
+
+    
     //Data Acces Objects
     private final BestelBonDAO BONDOA = new BestelBonDAO();
     private final WijnenDAO WIJNDAO = new WijnenDAO();
@@ -30,6 +33,8 @@ public class BestelBonService {
         }
         //Begins the transaction
         BONDOA.beginTransaction();
+        
+   
 
         //Tells hibernate to add the bestelbon to the database
         BONDOA.create(bon);

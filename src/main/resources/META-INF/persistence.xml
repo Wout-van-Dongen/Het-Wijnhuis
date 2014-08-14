@@ -6,7 +6,7 @@
     <class>be.vdab.wijnhuis.entities.Land</class>
     <class>be.vdab.wijnhuis.entities.Wijn</class>
     <class>be.vdab.wijnhuis.entities.BestelBon</class>
-    <class>be.vdab.wijnhuis.entities.BestelBonLijn</class>
+     <class>java.lang.Long</class>
     <properties>
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
