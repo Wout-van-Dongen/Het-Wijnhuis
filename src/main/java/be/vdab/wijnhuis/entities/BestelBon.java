@@ -2,11 +2,8 @@ package be.vdab.wijnhuis.entities;
 
 //Imports
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -26,26 +23,27 @@ public class BestelBon implements Serializable {
     @Column(name = "BestelDatum")
     //Variable van het type DATE
     private Date bestelDatum;
+    
     @Column(name = "Naam")
     private String naam;
+    
     @Column(name = "Straat")
     private String straat;
+    
     @Column(name = "HuisNr")
     private String huisNr;
+    
     @Column(name = "PostCode")
     private String postcode;
+    
     @Column(name = "Gemeente")
     private String gemeente;
+    
     @Column(name = "BestelWijze")
     private int bestelWijze;
 
- @ElementCollection
-@CollectionTable(name="bestelbonlijnen",joinColumns= @JoinColumn(name="BonNr"))
-@OrderBy("wijn.soort.land.naam")
-            name = "bestelbonlijnen",
-            joinColumns = @JoinColumn(name = "BonNr"),
-            inverseJoinColumns = @JoinColumn(name = "WijnNr")
-    )
+@OneToMany(fetch = FetchType.LAZY, mappedBy = "bon")
+private Set<BestelBonLijn> bonlijnen;
    
 
     
@@ -66,14 +64,9 @@ public class BestelBon implements Serializable {
         this.gemeente = gemeente;
         this.bestelWijze = bestelWijze;
 
-        wijnen = new LinkedHashSet<>();
+        bonlijnen = new HashSet<>();
     }
 
-    //Adders
-    public void addWijn(Wijn wijn, long aantal) {
-
-        wijnen.add(wijn);
-    }
 
     //Getters
     public long getBonNr() {
@@ -106,11 +99,6 @@ public class BestelBon implements Serializable {
 
     public int getBestelWijze() {
         return bestelWijze;
-    }
-
-    
-    public Set<Wijn> getWijnen(){
-    return Collections.unmodifiableSet(wijnen);
     }
 
     //Setters
@@ -146,4 +134,14 @@ public class BestelBon implements Serializable {
         this.bestelWijze = bestelWijze;
     }
 
+    public Set<BestelBonLijn> getBonlijnen() {
+        return bonlijnen;
+    }
+
+    public void setBonlijnen(Set<BestelBonLijn> bonlijnen) {
+        this.bonlijnen = bonlijnen;
+    }
+
+    
+    
 }

@@ -28,7 +28,7 @@ public class BestelBonService {
 
 
             //Add the bestelbonLijn to the array in bestelbon
-            bon.addWijn(wijn, entry.getValue());
+            //bon.addWijn(wijn, entry.getValue());
             //Add the bestelbonLijn to the array in bestelbon
         }
         //Begins the transaction

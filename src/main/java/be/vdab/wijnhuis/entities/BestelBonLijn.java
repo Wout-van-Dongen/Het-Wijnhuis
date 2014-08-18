@@ -35,6 +35,10 @@ public class BestelBonLijn implements Serializable {
     protected BestelBonLijn() {
 
     }
+    
+    public BestelBonLijn(Wijn wijn, BestelBon bon, int aantal){
+    
+    }
 
     //Getters & Setters
     public long getWijnNr() {
@@ -67,6 +71,7 @@ public class BestelBonLijn implements Serializable {
 
     public void setWijn(Wijn wijn) {
         this.wijn = wijn;
+        setWijnNr(wijn.getWijnNr());
     }
 
     public BestelBon getBon() {
@@ -75,6 +80,7 @@ public class BestelBonLijn implements Serializable {
 
     public void setBon(BestelBon bon) {
         this.bon = bon;
+        setBonNr(bon.getBonNr());
     }
 
 }

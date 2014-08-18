@@ -3,7 +3,7 @@ package be.vdab.wijnhuis.entities;
 //Imports
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -33,11 +33,9 @@ public class Wijn implements Serializable {
     @JoinColumn(name = "SoortNr")
     private Soort soort;
 
-    @ManyToMany(
-            mappedBy = "wijnen"
-    )
-    //Bestelbon
-    Set<BestelBon> bestelbonnen;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wijn")
+    private Set<BestelBonLijn> bonlijnen;
+    
 
     protected Wijn() {
         /**
@@ -54,7 +52,7 @@ public class Wijn implements Serializable {
         setBeoordeling(beoordeling);
         setBesteld(besteld);
         setPrijs(prijs);
-        bestelbonnen = new LinkedHashSet<>();
+        bonlijnen = new HashSet<>();
     }
 
 // Setters
@@ -78,11 +76,6 @@ public class Wijn implements Serializable {
         this.jaar = jaar;
     }
 
-    //Adders
-    public void addBon(BestelBon bon){
-    bestelbonnen.add(bon);
-    }
-    
 // Getters
     public Soort getSoort() {
         return soort;
@@ -108,8 +101,13 @@ public class Wijn implements Serializable {
         return prijs;
     }
 
-    public Set<BestelBon> getBestelBonnen(){
-   return bestelbonnen;
+    public Set<BestelBonLijn> getBonlijnen() {
+        return bonlijnen;
     }
-    
+
+    public void setBonlijnen(Set<BestelBonLijn> bonlijnen) {
+        this.bonlijnen = bonlijnen;
+    }
+
+   
 }
